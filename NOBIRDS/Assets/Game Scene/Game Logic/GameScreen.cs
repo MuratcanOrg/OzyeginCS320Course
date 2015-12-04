@@ -24,7 +24,7 @@ public class GameScreen : MonoBehaviour {
 	void FixedUpdate()
 	{
 		mouseX = mainCamera.ScreenToWorldPoint(Input.mousePosition).x - centralX;
-		mouseY = mainCamera.ScreenToWorldPoint(Input.mousePosition).z - c-AentralY;
+		mouseY = mainCamera.ScreenToWorldPoint(Input.mousePosition).z - centralY;
 	}
 	
 	public static float getSolutionWidth()
