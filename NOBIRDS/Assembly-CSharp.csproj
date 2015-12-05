@@ -53,6 +53,9 @@
      <Compile Include="Assets\Game Scene\Game Logic\GameScreen.cs" />
      <Compile Include="Assets\Game Scene\Game Logic\ObjectCreator.cs" />
      <Compile Include="Assets\Game Scene\Game Logic\ObstacleCreator.cs" />
+     <Compile Include="Assets\Game Scene\Game Logic\Scripts\Character.cs" />
+     <Compile Include="Assets\Game Scene\Game Logic\Scripts\obstacle.cs" />
+     <None Include="Assets\GUI\Fonts\Komika\Komika.txt" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
