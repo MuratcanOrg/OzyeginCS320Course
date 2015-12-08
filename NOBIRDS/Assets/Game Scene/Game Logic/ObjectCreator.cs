@@ -1,15 +1,18 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ObjectCreator : MonoBehaviour {
+public abstract class ObjectCreator : MonoBehaviour {
+	public GameObject[] obstacles;
+	public static float creationCycle = 1f;
+	protected static float counter = creationCycle; 
+ 
+	protected void FixedUpdate () { 
+		counter -= Time.deltaTime; 
+		if (counter <= 0) {
+			createObject (); 
+			counter = creationCycle;
+        } 
+    }
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+	protected abstract void createObject(); 
 }
