@@ -21,14 +21,16 @@ public class GameLogic : MonoBehaviour
 
     // Use this for initialization
     void Start () {
+        Time.timeScale = 1;
+        Debug.Log("fuck you!!!!");
         scrollingVelocity = Vector3.down * (scrollingSpeed) * Time.deltaTime;
 	}
 
     // Update is called once per frame
-    void Update () { 
-        if (score >= 100)
+    void FixedUpdate () { 
+        if (score >= 10000)
             GameOver();
-        scrollingSpeed = isScrolling ? fixedScrollingSpeed : 0;
+        
         //isScrolling = true;
     }
     public static void setPaused(bool paused)
