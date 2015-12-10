@@ -10,76 +10,31 @@ public class Character : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
-
-    }
-
-    public void getInput()
+	void FixedUpdate ()
     {
-        getInputFromMouse();
-        getInputFromTouchScreen();
+       getInput();
 
-
-
-        
     }
 
-    private void getInputFromMouse()
-    { 
-        if (Input.GetButtonDown("Fire1"))
+    private void getInput()
+    {
+        if (isTapDown())
         {
-            onTapped();
-            Debug.Log("Clicked");
+            GameLogic.stopScrolling();
+        }
+        if (isTapUp())
+        {
+            GameLogic.startScrolling();
         }
     }
 
-    private void onTapped()
+    private bool isTapDown()
     {
-        GameLogic.stopScrolling();
+        return Input.GetMouseButtonDown(0);
     }
 
-    private void onDragging()
+    private bool isTapUp()
     {
-        GameLogic.stopScrolling();
-    }
-
-    private void changeColumn()
-    {
-        GameLogic.stopScrolling();
-    }
-    private void getInputFromTouchScreen()
-    {
-        if (Input.touchCount > 0)
-        {
-            int i = 0;
-            while (i < Input.touchCount)
-            {
-                //mouseX = mCamera.ScreenToWorldPoint(Input.GetTouch(i).position).x - gameObject.transform.position.x;
-                //mouseZ = mCamera.ScreenToWorldPoint(Input.GetTouch(i).position).z - gameObject.transform.position.z;
-
-                //++i;
-                //if ((Mathf.Tan(1 * Mathf.PI / 6) * mouseX > mouseZ) && (Mathf.Tan(1 * Mathf.PI / 6) * mouseX < -mouseZ))
-                //{
-                //    //moveRandomly (1);
-                //    moveRandomly((int)(directions[0].transform.eulerAngles.y / 360 * 4));
-                //}
-                //if ((Mathf.Tan(2 * Mathf.PI / 6) * mouseX > -mouseZ) && (Mathf.Tan(2 * Mathf.PI / 6) * mouseX > mouseZ))
-                //{
-                //    //moveRandomly (0);
-                //    moveRandomly((int)(directions[1].transform.eulerAngles.y / 360 * 4));
-                //}
-                //if ((Mathf.Tan(1 * Mathf.PI / 6) * mouseX < mouseZ) && (Mathf.Tan(1 * Mathf.PI / 6) * mouseX > -mouseZ))
-                //{
-                //    //moveRandomly (3);
-                //    moveRandomly((int)(directions[2].transform.eulerAngles.y / 360 * 4));
-                //}
-                //if ((Mathf.Tan(2 * Mathf.PI / 6) * mouseX < -mouseZ) && (Mathf.Tan(2 * Mathf.PI / 6) * mouseX < mouseZ))
-                //{
-                //    //moveRandomly (2);
-                //    moveRandomly((int)(directions[3].transform.eulerAngles.y / 360 * 4));
-                //}
-            }
-        }
-
+        return Input.GetMouseButtonUp(0);
     }
 }

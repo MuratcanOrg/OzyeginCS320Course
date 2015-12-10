@@ -12,25 +12,23 @@ public class GameLogic : MonoBehaviour
     public static int score = 0; 
     public static float scrollingSpeed = 3f;
     private static float fixedScrollingSpeed = scrollingSpeed;
-    public static Vector3 scrollingVelocity;
+    public static Vector2 scrollingVelocity;
 
     public static string getCurrentScene()
     {
         return Application.loadedLevel == 0 ? "GUI" : "Game Scene";
     }
-
-    // Use this for initialization
+ 
     void Start () {
-        scrollingVelocity = Vector3.down * (scrollingSpeed) * Time.deltaTime;
+        Time.timeScale = 1; 
+        scrollingVelocity = Vector3.down * (scrollingSpeed);
 	}
-
-    // Update is called once per frame
-    void Update () { 
-        if (score >= 100)
-            GameOver();
-        scrollingSpeed = isScrolling ? fixedScrollingSpeed : 0;
-        //isScrolling = true;
+     
+    void FixedUpdate () { 
+        if (score >= 10000)
+            GameOver(); 
     }
+
     public static void setPaused(bool paused)
     {
         pause = paused;
@@ -64,6 +62,11 @@ public class GameLogic : MonoBehaviour
     public static void recordHighScore(string playerName)
     { 
         DataManager.recordPlayer(score, playerName); 
+    }
+
+    public static void startScrolling()
+    {
+        isScrolling = true;
     }
 
     public static void stopScrolling()
