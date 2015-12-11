@@ -9,8 +9,8 @@ public class obstacle : MonoBehaviour {
 	void Start () {
         speed = 3;
         rgdBody2D = GetComponent<Rigidbody2D>();
-		if (getPosition ().x < GameScreen.centralX) 
-			velocity = Vector2.right * (speed); 
+        if (getPosition().x < GameScreen.centralX)
+            velocity = Vector2.right * (speed); 
 		else
 			velocity = Vector2.left * (speed);
 	}
@@ -20,9 +20,18 @@ public class obstacle : MonoBehaviour {
         Vector2 v = (GameLogic.isScrolling ? GameLogic.scrollingVelocity : Vector2.zero);
         rgdBody2D.velocity = velocity + v;
 		if (isObjectDead ()) {
-			Destroy (gameObject);
-        GameLogic.scored(10);
-		}
+			
+            GameLogic.scored(10);
+            if (getPosition().x < GameScreen.centralX)
+            {
+                ObstacleCreator.fromLeft.Remove(gameObject);
+            }
+            else
+            {
+                ObstacleCreator.fromRight.Remove(gameObject);
+            }
+            Destroy(gameObject);
+        }
         if (isHit())
         {
             //GameLogic.GameOver();
