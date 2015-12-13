@@ -2,7 +2,6 @@
 using System.Collections;
 
 public abstract class ObjectCreator : MonoBehaviour {
-	public GameObject[] obstacles;
 	public static float creationCycle = 1f;
 	protected static float counter = creationCycle; 
  

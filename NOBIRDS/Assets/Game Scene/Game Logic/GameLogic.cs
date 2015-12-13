@@ -9,7 +9,9 @@ public class GameLogic : MonoBehaviour
     public static bool mute = false;
     public static bool gameOver = false;
     public static bool isScrolling = true;
-    public static int score = 0; 
+    public static int score = 0;
+    public static int level = 2;
+    public static float hardnessRate = 1f;
     public static float scrollingSpeed = 3f;
     private static float fixedScrollingSpeed = scrollingSpeed;
     public static Vector2 scrollingVelocity;
@@ -20,11 +22,14 @@ public class GameLogic : MonoBehaviour
     }
  
     void Start () {
-        Time.timeScale = 1; 
+        Time.timeScale = 1;
+        Physics2D.gravity =  Vector2.zero;
         scrollingVelocity = Vector3.down * (scrollingSpeed);
 	}
      
-    void FixedUpdate () { 
+    void FixedUpdate () {
+        hardnessRate = 1f + (score / 1500f);
+        //level = score / 500;
         if (score >= 10000)
             GameOver(); 
     }
