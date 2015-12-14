@@ -4,6 +4,8 @@ using System;
 
 public class Character : MonoBehaviour {
     private Vector3 firstScale = new Vector3(1, 1, 1); 
+    private int currentColumn;
+    private int currentRow; 
     public Rigidbody2D rgdBody2D; 
 
     void Start () {
@@ -66,18 +68,29 @@ public class Character : MonoBehaviour {
 
     private void trackColumnOfInput()
     {
-        //Debug.Log(GameScreen.mouseX); 
-        rgdBody2D.velocity = getHorizontalDirection() * GameScreen.columnSpace * 10;
+        if (isOnColumn()) 
+            rgdBody2D.velocity = getHorizontalDirection(); 
+        
     }
 
     private Vector2 getHorizontalDirection()
     {
-        if (getPosition().x > GameScreen.leftMostColumnX && GameScreen.mouseX < getPosition().x) 
+        if (currentColumn != 0 && GameScreen.mouseX < getLeftBorderX()) 
             return Vector2.left; 
-        else if (getPosition().x < GameScreen.rightMostColumnX && GameScreen.mouseX > getPosition().x) 
+        else if (currentColumn != GameScreen.columnNumber-1 && GameScreen.mouseX > getRightBorderX()) 
             return Vector2.right; 
         else
             return Vector2.zero;
+    }
+
+    private float getLeftBorderX()
+    {
+        return rgdBody2D.position.x - transform.localScale.x / 2 - 0.05f;
+    }
+
+    private float getRightBorderX()
+    {
+        return rgdBody2D.position.x + transform.localScale.x / 2 + 0.05f;
     }
 
     private void trackCellOfInput()
@@ -88,8 +101,8 @@ public class Character : MonoBehaviour {
 
     private void trackRowOfInput()
     {
-        if (getPosition().y > GameScreen.lowestRowY && getPosition().y < GameScreen.highestRowY)
-            rgdBody2D.MovePosition(rgdBody2D.position + (getVerticalDirection() * GameScreen.rowSpace));
+        if (isOnColumn())
+            rgdBody2D.velocity = getHorizontalDirection();
     }
 
     private Vector2 getVerticalDirection()
@@ -144,14 +157,41 @@ public class Character : MonoBehaviour {
 
     private void slideNearestColumn()
     {
-        if (GameScreen.isCharacterOnColumn())
+        if (isOnColumn())
             rgdBody2D.velocity = new Vector2(0, rgdBody2D.velocity.y);
     }
+
+    public bool isOnColumn()
+    {
+        for (float x = GameScreen.leftMostColumnX; x <= GameScreen.rightMostColumnX; x += GameScreen.columnSpace)
+        { 
+            if (Mathf.Abs(x - getPosition().x) < 0.01f)
+            {
+                currentColumn = (int)((x - GameScreen.columnBound / 2) / GameScreen.columnSpace);
+                return true;
+            }
+        }
+        return false;
+    }
+
     private void slideNearestRaw()
     {
-        if (GameScreen.isCharacterOnRow())
+        if (isOnRow())
             rgdBody2D.velocity = new Vector2(rgdBody2D.velocity.y, 0);
     }
+    public bool isOnRow()
+    {
+        for (float y = GameScreen.lowestRowY; y <= GameScreen.highestRowY; y += GameScreen.rowSpace)
+        {
+            if (Mathf.Abs(y - getPosition().y) < 0.01f)
+            {
+                currentRow = (int)((y - GameScreen.rowBound / 2) / GameScreen.rowSpace);
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     private bool isTapUp()
     {

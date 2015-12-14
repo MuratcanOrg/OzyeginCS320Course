@@ -87,31 +87,7 @@ public class GameScreen : MonoBehaviour {
 		return Random.Range (minY, maxY);
     }
 
-    public static bool isCharacterOnColumn()
-    {
-        for (float x = leftMostColumnX; x <= rightMostColumnX; x += columnSpace)
-        {
-            Debug.Log(x);
-            if (Mathf.Abs(x - getPositionOfCharacter().x) < 0.01f)
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public static bool isCharacterOnRow()
-    {
-        for (float y = lowestRowY; y <= highestRowY; y += rowSpace)
-        {
-            if (Mathf.Abs(y - getPositionOfCharacter().y) < 0.01f)
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
+    
     public static Vector2 getPositionOfCharacter () {
 		return FindObjectOfType <Character>().rgdBody2D.position;
 	}

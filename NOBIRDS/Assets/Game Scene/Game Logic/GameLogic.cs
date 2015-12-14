@@ -10,7 +10,7 @@ public class GameLogic : MonoBehaviour
     public static bool gameOver = false;
     public static bool isScrolling = true;
     public static int score = 0;
-    public static int level = 2;
+    public static int level = 3;
     public static float hardnessRate = 1f;
     public static float scrollingSpeed = 3f;
     private static float fixedScrollingSpeed = scrollingSpeed;
