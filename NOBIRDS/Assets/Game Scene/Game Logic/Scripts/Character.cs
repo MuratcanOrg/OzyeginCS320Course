@@ -5,11 +5,14 @@ using System;
 public class Character : MonoBehaviour {
     private Vector3 firstScale = new Vector3(1, 1, 1); 
     private int currentColumn;
-    private int currentRow; 
+    private int currentRow;
+    private Vector2 direction;
+    private Vector2 size;
     public Rigidbody2D rgdBody2D; 
 
     void Start () {
         rgdBody2D = GetComponent<Rigidbody2D>();
+        size = ((BoxCollider2D)GetComponent<BoxCollider2D>()).size;
     }
      
     void FixedUpdate ()
@@ -26,14 +29,12 @@ public class Character : MonoBehaviour {
 
     private void getInput()
     {
-        if (isTapDown())
-        {
-            move();
-        }
-        else
-        {
-            stop();
-        }
+        rgdBody2D.velocity = direction * 2;
+        //Debug.Log(direction); 
+        if (isTapDown()) 
+            move(); 
+        else 
+            stop(); 
     }
 
     private bool isTapDown()
@@ -63,34 +64,34 @@ public class Character : MonoBehaviour {
             default:
                 break;
         }
-         
     }
 
     private void trackColumnOfInput()
     {
-        if (isOnColumn()) 
-            rgdBody2D.velocity = getHorizontalDirection(); 
+        if (isOnColumn()) {Debug.Log(currentColumn);
+            setHorizontalDirection(); }
         
     }
 
-    private Vector2 getHorizontalDirection()
+    private void setHorizontalDirection()
     {
-        if (currentColumn != 0 && GameScreen.mouseX < getLeftBorderX()) 
-            return Vector2.left; 
-        else if (currentColumn != GameScreen.columnNumber-1 && GameScreen.mouseX > getRightBorderX()) 
-            return Vector2.right; 
+        
+        if (currentColumn != 0 && GameScreen.mouseX < getLeftBorderX())  
+            direction.x = Vector2.left.x;
+        else if (currentColumn != GameScreen.columnNumber-1 && GameScreen.mouseX > getRightBorderX())
+            direction.x = Vector2.right.x; 
         else
-            return Vector2.zero;
+            direction.x = Vector2.zero.x;
     }
 
     private float getLeftBorderX()
     {
-        return rgdBody2D.position.x - transform.localScale.x / 2 - 0.05f;
+        return rgdBody2D.position.x - 3 * size.x / 2;
     }
 
     private float getRightBorderX()
     {
-        return rgdBody2D.position.x + transform.localScale.x / 2 + 0.05f;
+        return rgdBody2D.position.x + 3 * size.x / 2;
     }
 
     private void trackCellOfInput()
@@ -101,31 +102,45 @@ public class Character : MonoBehaviour {
 
     private void trackRowOfInput()
     {
-        if (isOnColumn())
-            rgdBody2D.velocity = getHorizontalDirection();
+        if (isOnRow())
+            setVerticalDirection();
     }
 
-    private Vector2 getVerticalDirection()
+    private void setVerticalDirection()
     {
-        return GameScreen.mouseX < getPosition().x ? Vector2.left : Vector2.right;
+        if (currentRow != 0 && GameScreen.mouseY < getLowerBorderY())
+            direction.y = Vector2.down.y;
+        else if (currentRow != GameScreen.rowNumber - 2 && GameScreen.mouseY > getUpperBorderY())
+            direction.y = Vector2.up.y;
+        else
+            direction.y = Vector2.zero.y;
+    }
+
+    private float getUpperBorderY()
+    {
+        return rgdBody2D.position.y + 3 * size.y / 2;
+    }
+
+    private float getLowerBorderY()
+    {
+        return rgdBody2D.position.y - 3 * size.y / 2;
     }
 
     private void trackInputXOnRows()
     {
+        isOnColumn();
+        setHorizontalDirection();
         trackRowOfInput();
-        trackInputX();
-    }
-
-    private void trackInputX()
-    {
-        rgdBody2D.velocity = getHorizontalDirection() * 2;
-    }
+    } 
 
     private void trackInput()
     {
-        trackInputX();
-        rgdBody2D.velocity = rgdBody2D.velocity + getVerticalDirection() * 2;
+        isOnColumn();
+        isOnRow();
+        setHorizontalDirection();
+        setVerticalDirection();
     }
+
     private Vector2 getPosition()
     {
         return rgdBody2D.position;
@@ -142,10 +157,12 @@ public class Character : MonoBehaviour {
                 slideNearestColumn();
                 break;
             case 3:
-                slideNearestRaw();
+                //slideNearestColumn();
+                slideNearestRow();
                 break;
             case 4:
-                slideNearestRaw();
+                //direction.x = Vector2.zero.x;
+                slideNearestRow();
                 break;
             case 5:
                 rgdBody2D.velocity = Vector2.zero;
@@ -158,14 +175,16 @@ public class Character : MonoBehaviour {
     private void slideNearestColumn()
     {
         if (isOnColumn())
-            rgdBody2D.velocity = new Vector2(0, rgdBody2D.velocity.y);
+            direction.x = Vector2.zero.x;
     }
 
     public bool isOnColumn()
     {
         for (float x = GameScreen.leftMostColumnX; x <= GameScreen.rightMostColumnX; x += GameScreen.columnSpace)
-        { 
-            if (Mathf.Abs(x - getPosition().x) < 0.01f)
+        {
+            float catchScale = size.x / 5f;
+            Debug.Log(Mathf.Abs(x - getPosition().x));
+            if (Mathf.Abs(x - getPosition().x) < 0.05f)
             {
                 currentColumn = (int)((x - GameScreen.columnBound / 2) / GameScreen.columnSpace);
                 return true;
@@ -174,16 +193,18 @@ public class Character : MonoBehaviour {
         return false;
     }
 
-    private void slideNearestRaw()
+    private void slideNearestRow()
     {
         if (isOnRow())
-            rgdBody2D.velocity = new Vector2(rgdBody2D.velocity.y, 0);
+            direction.y = Vector2.zero.y;
     }
+
     public bool isOnRow()
     {
         for (float y = GameScreen.lowestRowY; y <= GameScreen.highestRowY; y += GameScreen.rowSpace)
         {
-            if (Mathf.Abs(y - getPosition().y) < 0.01f)
+            float catchScale = size.y / 3;
+            if (Mathf.Abs(y - getPosition().y) < catchScale)
             {
                 currentRow = (int)((y - GameScreen.rowBound / 2) / GameScreen.rowSpace);
                 return true;

@@ -23,7 +23,7 @@ public class GameScreen : MonoBehaviour {
 	public static float centralY = height / 2f;
     public static float mouseX;
     public static float mouseY;
-
+    
     public static int columnNumber = 3;
     public static float columnBound = 1f;
     public static float columnSpace = (width - columnBound) / (columnNumber - 1);
@@ -38,15 +38,13 @@ public class GameScreen : MonoBehaviour {
 
     void Start()
     {
-        Debug.Log(leftMostColumnX);
-        Debug.Log(rightMostColumnX);
-        Debug.Log(columnSpace);
+        
     }
 
     void FixedUpdate()
     {
         mouseX = mainCamera.ScreenToWorldPoint(Input.mousePosition).x;
-        mouseY = mainCamera.ScreenToWorldPoint(Input.mousePosition).z;
+        mouseY = mainCamera.ScreenToWorldPoint(Input.mousePosition).y;
         screenVector = mainCamera.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, -10));
         maximumXOfScreen = screenVector.x;
         maximumYOfScreen = screenVector.y;
