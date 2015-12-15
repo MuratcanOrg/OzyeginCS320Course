@@ -4,8 +4,8 @@ using System;
 
 public class Character : MonoBehaviour {
     private Vector3 firstScale = new Vector3(1, 1, 1); 
-    private int currentColumn;
-    private int currentRow;
+    private float currentColumn;
+    private float currentRow;
     private Vector2 direction;
     private Vector2 size;
     public Rigidbody2D rgdBody2D; 
@@ -29,7 +29,7 @@ public class Character : MonoBehaviour {
 
     private void getInput()
     {
-        rgdBody2D.velocity = direction * 2;
+        rgdBody2D.velocity = direction * 6;
         //Debug.Log(direction); 
         if (isTapDown()) 
             move(); 
@@ -50,10 +50,13 @@ public class Character : MonoBehaviour {
                 GameLogic.stopScrolling();
                 break;
             case 2:
-                trackColumnOfInput();
+                //trackColumnOfInput();
+                isOnColumn();
+                setHorizontalDirection();
                 break;
             case 3:
-                trackCellOfInput();
+                //trackCellOfInput();
+                trackInput();
                 break;
             case 4:
                 trackInputXOnRows();
@@ -76,9 +79,9 @@ public class Character : MonoBehaviour {
     private void setHorizontalDirection()
     {
         
-        if (currentColumn != 0 && GameScreen.mouseX < getLeftBorderX())  
+        if (currentColumn > 0 && GameScreen.mouseX < getLeftBorderX())  
             direction.x = Vector2.left.x;
-        else if (currentColumn != GameScreen.columnNumber-1 && GameScreen.mouseX > getRightBorderX())
+        else if (currentColumn < GameScreen.columnNumber-1 && GameScreen.mouseX > getRightBorderX())
             direction.x = Vector2.right.x; 
         else
             direction.x = Vector2.zero.x;
@@ -108,9 +111,9 @@ public class Character : MonoBehaviour {
 
     private void setVerticalDirection()
     {
-        if (currentRow != 0 && GameScreen.mouseY < getLowerBorderY())
+        if (currentRow > 0 && GameScreen.mouseY < getLowerBorderY())
             direction.y = Vector2.down.y;
-        else if (currentRow != GameScreen.rowNumber - 2 && GameScreen.mouseY > getUpperBorderY())
+        else if (currentRow < GameScreen.rowNumber - 2 && GameScreen.mouseY > getUpperBorderY())
             direction.y = Vector2.up.y;
         else
             direction.y = Vector2.zero.y;
@@ -148,17 +151,21 @@ public class Character : MonoBehaviour {
 
     private void stop()
     {
+        GameLogic.startScrolling();
+
         switch (GameLogic.level)
         {
             case 1:
-                GameLogic.stopScrolling();
+                GameLogic.startScrolling();
                 break;
             case 2:
-                slideNearestColumn();
-                break;
+                //slideNearestColumn();
+                direction.x = Vector2.zero.x;
+                    break;
             case 3:
                 //slideNearestColumn();
-                slideNearestRow();
+                direction = Vector2.zero;
+                //lideNearestRow();
                 break;
             case 4:
                 //direction.x = Vector2.zero.x;
@@ -180,17 +187,20 @@ public class Character : MonoBehaviour {
 
     public bool isOnColumn()
     {
-        for (float x = GameScreen.leftMostColumnX; x <= GameScreen.rightMostColumnX; x += GameScreen.columnSpace)
-        {
-            float catchScale = size.x / 5f;
-            Debug.Log(Mathf.Abs(x - getPosition().x));
-            if (Mathf.Abs(x - getPosition().x) < 0.05f)
-            {
-                currentColumn = (int)((x - GameScreen.columnBound / 2) / GameScreen.columnSpace);
-                return true;
-            }
-        }
-        return false;
+        currentColumn =((rgdBody2D.position.x - GameScreen.columnBound / 2) / GameScreen.columnSpace);
+        return Mathf.Abs(currentColumn - Mathf.Round(currentColumn)) < 0.01f;
+        
+        //for (float x = GameScreen.leftMostColumnX; x <= GameScreen.rightMostColumnX; x += GameScreen.columnSpace)
+        //{
+        //    float catchScale = size.x / 5f;
+        //    Debug.Log(Mathf.Abs(x - getPosition().x));
+        //    if (Mathf.Abs(x - getPosition().x) < 0.05f)
+        //    {
+                
+        //        return true;
+        //    }
+       // }
+        //return false;
     }
 
     private void slideNearestRow()

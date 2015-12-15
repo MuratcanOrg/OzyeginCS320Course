@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 public class GameScreen : MonoBehaviour {
     public Camera mainCamera;
@@ -10,6 +11,8 @@ public class GameScreen : MonoBehaviour {
 	public static float maximumYOfScreen = 10f;
     public static float width = maximumXOfScreen - minimumXOfScreen;
     public static float height = maximumYOfScreen - minimumYOfScreen;
+
+
     public static float groundZ = 0f; 
 	
 	private static float creationSpace = 1f; 
@@ -25,7 +28,7 @@ public class GameScreen : MonoBehaviour {
     public static float mouseY;
     
     public static int columnNumber = 3;
-    public static float columnBound = 1f;
+    public static float columnBound = -1f;
     public static float columnSpace = (width - columnBound) / (columnNumber - 1);
     public static float leftMostColumnX = minimumXOfScreen + columnBound / 2f;
     public static float rightMostColumnX = maximumXOfScreen - columnBound / 2f;
@@ -76,13 +79,19 @@ public class GameScreen : MonoBehaviour {
 	public static Vector3 getRandomVec3FromRight () {
 		return new Vector3 (maxX, getRandomY (), groundZ); 
 	}
-	
-	public static float getRandomX () {
-		return Random.Range (minX, maxX);
+
+
+    public static Vector2 getRandomVec3FromUp()
+    {
+        return new Vector2( getRandomX(), maxY);
+    }
+
+    public static float getRandomX () {
+		return UnityEngine.Random.Range (minX, maxX);
 	}
 	
 	public static float getRandomY () {
-		return Random.Range (minY, maxY);
+		return UnityEngine.Random.Range (minY, maxY);
     }
 
     

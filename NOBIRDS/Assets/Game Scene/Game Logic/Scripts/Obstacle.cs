@@ -32,7 +32,7 @@ public class Obstacle : MonoBehaviour {
 
     private void setVelocity()
     { 
-        speed = 3;
+        // speed = 3;
         if (getPosition().x < GameScreen.centralX)
             velocity = Vector2.right * (speed); 
 		else
@@ -76,7 +76,7 @@ public class Obstacle : MonoBehaviour {
     { 
         if (collision.gameObject.tag == "Character")
         {
-           //GameLogic.GameOver();
+           GameLogic.GameOver();
         }
     }
 
