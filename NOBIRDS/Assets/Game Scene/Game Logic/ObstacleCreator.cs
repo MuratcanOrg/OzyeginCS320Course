@@ -14,9 +14,9 @@ public class ObstacleCreator : ObjectCreator
         Vector2 vec2fromRight = GameScreen.getRandomVec3FromRight();
         Vector2 vec2fromUp = GameScreen.getRandomVec3FromUp();
         GameObject obstacleFromLeft = (GameObject)Instantiate(obstacles[0],vec2fromLeft, Quaternion.identity); 
-		GameObject obstacleFromRight = (GameObject)Instantiate(obstacles[0], vec2fromRight, Quaternion.identity);
+		GameObject obstacleFromRight = (GameObject)Instantiate(obstacles[1], vec2fromRight, Quaternion.identity);
         if (GameLogic.score > 500 && counter > 10)
-        { GameObject obstacleFromUp = (GameObject)Instantiate(obstacles[1], vec2fromUp, Quaternion.identity); }
+        { GameObject obstacleFromUp = (GameObject)Instantiate(obstacles[2], vec2fromUp, Quaternion.identity); }
         if (counter ++ > 10)
         {
             counter = 0;

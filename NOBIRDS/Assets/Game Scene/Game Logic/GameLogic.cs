@@ -15,6 +15,7 @@ public class GameLogic : MonoBehaviour
     public static float scrollingSpeed = 3f;
     private static float fixedScrollingSpeed = scrollingSpeed;
     public static Vector2 scrollingVelocity;
+    private static GameObject logic;
 
     public static string getCurrentScene()
     {
@@ -22,13 +23,17 @@ public class GameLogic : MonoBehaviour
     }
  
     void Start () {
+        logic = gameObject;
+        logic.GetComponent<AudioSource>().Play();
+
         Time.timeScale = 1;
         Physics2D.gravity =  Vector2.zero;
         scrollingVelocity = Vector3.down * (scrollingSpeed) * hardnessRate;
 	}
      
     void FixedUpdate () {
-        hardnessRate = 1f + (score / 7500f); 
+        hardnessRate = 1f + (score / 7500f);
+       
         if (score < 500)
         {
             GameLogic.level = 1;
@@ -53,7 +58,18 @@ public class GameLogic : MonoBehaviour
 
     public static void setMuted(bool muted)
     {
-        mute = !muted;
+        logic.GetComponent<AudioSource>().mute = muted;
+        GameLogic.mute = muted;
+        //if (!mute)
+        //{
+        //    logic.GetComponent<AudioSource>().mute = mute;
+        //    mute = false;
+        //}
+        //else
+        //{
+        //    logic.GetComponent<AudioSource>().Pause();
+        //    mute = true;
+        //}
     }
      
     public static void startGame()

@@ -25,8 +25,10 @@ public class Obstacle : MonoBehaviour {
         for (int i = 1; i < obstacles.Length;i++ )
         {
             Transform obstaclePrefab = obstacles[i].transform;
-            BoxCollider2D otherCollider = obstaclePrefab.GetComponent<BoxCollider2D>();
-            Physics2D.IgnoreCollision(otherCollider, GetComponent<BoxCollider2D>()); 
+            PolygonCollider2D otherCollider = obstaclePrefab.GetComponent<PolygonCollider2D>();
+            Physics2D.IgnoreCollision(otherCollider, GetComponent<PolygonCollider2D>());
+            BoxCollider2D otherCollider1 = obstaclePrefab.GetComponent<BoxCollider2D>();
+            Physics2D.IgnoreCollision(otherCollider1, GetComponent<PolygonCollider2D>());
         } 
     }
 

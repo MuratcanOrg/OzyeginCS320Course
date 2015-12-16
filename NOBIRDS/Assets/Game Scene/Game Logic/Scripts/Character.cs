@@ -3,7 +3,7 @@ using System.Collections;
 using System;
 
 public class Character : MonoBehaviour {
-    private Vector3 firstScale = new Vector3(1, 1, 1); 
+    private Vector3 firstScale = new Vector3(0.07948507f, 0.1149426f, 1); 
     private float currentColumn;
     private float currentRow;
     private Vector2 direction;
